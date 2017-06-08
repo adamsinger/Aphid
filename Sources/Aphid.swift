@@ -130,6 +130,14 @@ open class Aphid {
         requestHandler(packet: PubrelPacket(packetId: packetId))
     }
 
+    internal func confirmGotPublish(packet: PublishPacket) {
+        if packet.qos == .atLeastOnce {
+            requestHandler(packet: PubackPacket(packetId: packet.identifier))
+        } else if packet.qos == .exactlyOnce {
+            requestHandler(packet: PubrecPacket(packetId: packet.identifier))
+        }
+    }
+
     internal func requestHandler(packet: ControlPacket, onCompletion: (()->())? = nil) {
         
         guard let sock = socket else {
@@ -239,7 +247,9 @@ extension Aphid {
             case _ as ConnackPacket     : delegate?.didConnect()
             case _ as PubackPacket      : delegate?.didCompleteDelivery(token: packet.description)
             case _ as PubcompPacket     : delegate?.didCompleteDelivery(token: packet.description)
-            case let p as PublishPacket : delegate?.didReceiveMessage(topic: p.topic, message: p.message)
+            case let p as PublishPacket :
+                                          delegate?.didReceiveMessage(topic: p.topic, message: p.message)
+                                          self.confirmGotPublish(packet: p)
             case let p as PubrecPacket  :
                                           delegate?.didCompleteDelivery(token: packet.description)
                                           self.pubrel(packetId: p.packetId)

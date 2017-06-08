@@ -40,7 +40,7 @@ struct PublishPacket {
         var data = data
 
         self.controlByte = header
-        self.qos = QosType(rawValue: controlByte & UInt8(0x06) >> 1)!
+        self.qos = QosType(rawValue: (controlByte & UInt8(0x06)) >> 1)!
 
         topic = data.decodeString
 
