@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Aphid"
-  s.version          = "0.5.1"
+  s.version          = "0.5.2"
   s.summary          = "Lightweight MQTT client in Swift 3"
   s.homepage         = "https://github.com/IBM-Swift/Aphid"
   s.license          = { :type => 'Apache License, Version 2.0' }
