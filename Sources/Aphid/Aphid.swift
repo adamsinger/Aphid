@@ -59,7 +59,7 @@ open class Aphid {
         
         try socket!.setBlocking(mode: false)
         
-        try socket!.connect(to: config.host, port: config.port)
+        try socket!.connect(to: config.host, port: config.port, timeout: 10)
 
         requestHandler(packet: ConnectPacket()) {
             
@@ -265,7 +265,7 @@ extension Aphid {
 
         keepAliveTimer = keepAliveTimer ?? DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags.strict, queue: writeQueue)
 
-        keepAliveTimer?.scheduleRepeating(deadline: .now(), interval: .seconds(Int(config.keepAlive)), leeway: .milliseconds(500))
+        keepAliveTimer?.schedule(deadline: .now(), repeating: .seconds(Int(config.keepAlive)), leeway: .milliseconds(500))
 
         keepAliveTimer?.setEventHandler {
 
