@@ -28,7 +28,7 @@ let package = Package(
       )
     ],
     dependencies: [
-        .package(url: "https://github.com/IBM-Swift/BlueSSLService.git", .upToNextMinor(from: "0.12.0")),
+        .package(url: "https://github.com/onwardmethod/BlueSSLService.git", .branch("all-dependencies")),
     ],
     targets: [
       .target(
